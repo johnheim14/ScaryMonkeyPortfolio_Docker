@@ -20,5 +20,4 @@ COPY --from=builder /app/dist/css /usr/share/nginx/html/css
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
-# Set our script as the container's entrypoint
-ENTRYPOINT ["/entrypoint.sh"]
+EXPOSE 80
