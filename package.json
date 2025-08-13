@@ -2,7 +2,7 @@
   "name": "scary-monkey-web",
   "version": "1.0.0",
   "scripts": {
-    "build:css": "mkdir -p dist/css && tailwindcss -i ./src/css/input.css -o ./dist/css/styles.css --minify",
+    "build:css": "tailwindcss -i ./src/css/input.css -o ./dist/css/styles.css --minify",
     "build": "npm run build:css"
   },
   "devDependencies": {
