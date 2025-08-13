@@ -1,6 +1,11 @@
 FROM node:18-alpine AS builder
 WORKDIR /app
 
+RUN mkdir -p /var/cache/nginx/client_temp && \
+    chown -R nginx:nginx /var/cache/nginx
+
+RUN rm -rf /usr/share/nginx/html/*
+
 COPY package*.json ./
 RUN npm install
 
