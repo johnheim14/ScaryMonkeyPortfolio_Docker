@@ -5,3 +5,4 @@ services:
     ports:
       - "4080:80"
     restart: unless-stopped
+    entrypoint: ["/entrypoint.sh"]
