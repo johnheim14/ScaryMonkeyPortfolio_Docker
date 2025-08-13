@@ -14,16 +14,18 @@ COPY src/ ./src/
 # Run the build script to compile the CSS
 RUN npm run build
 
-# --- THIS IS THE NEW LINE ---
 # Copy the index.html from src into the final dist directory
 COPY src/index.html ./dist/
+
+# --- THIS IS THE NEW LINE ---
+# Copy the img folder from src into the final dist directory
+COPY src/img ./dist/img
 
 
 # === Stage 2: Serve the built files with NGINX ===
 FROM nginx:alpine
 
 # Copy the entire contents of the compiled 'dist' directory
-# This now includes both index.html and the css folder
 COPY --from=builder /app/dist /usr/share/nginx/html
 
 # Expose port 80
