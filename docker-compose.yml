@@ -5,12 +5,3 @@ services:
     ports:
       - "4080:80"
     restart: unless-stopped
-    entrypoint:
-      - /bin/sh
-      - -c
-      - |
-        echo "--- Setting permissions and starting Nginx ---"
-        chown -R nginx:nginx /usr/share/nginx/html
-        chmod -R 755 /usr/share/nginx/html
-        echo "--- Permissions set. Handing over to Nginx... ---"
-        exec /docker-entrypoint.sh nginx -g 'daemon off;'
