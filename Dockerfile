@@ -1,10 +1,8 @@
-# Use a simple Nginx image
+# Use a simple, lightweight web server
 FROM nginx:alpine
 
-# Copy your website's HTML, JS, and image files
-COPY ./src /usr/share/nginx/html
-
-# Copy your pre-built CSS file
-COPY ./dist/css /usr/share/nginx/html/css
+# Copy the entire contents of your finished build folder 
+# to the web server's public directory.
+COPY ./dist /usr/share/nginx/html
 
 EXPOSE 80
