@@ -1,25 +1,21 @@
 # .github/workflows/deploy.yml
 name: Deploy to NAS
 
-# Trigger this workflow on every push to the main branch
 on:
   push:
     branches:
       - main
 
-# Define the job that will be executed
 jobs:
   deploy:
-    # This is the crucial line: it tells GitHub to run this job on your NAS
     runs-on: self-hosted
 
     steps:
-      # Step 1: Check out the repository code onto the runner
       - name: Check out code
         uses: actions/checkout@v4
 
-      # Step 2: Build and deploy the Docker container using docker-compose
+      # Use the modern "docker compose" command (with a space)
       - name: Deploy with Docker Compose
         run: |
-          docker-compose build --no-cache
-          docker-compose up -d --force-recreate
+          docker compose build --no-cache
+          docker compose up -d --force-recreate
