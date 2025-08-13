@@ -14,8 +14,16 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v4
 
-      # Docker now handles the entire build process, including Tailwind!
       - name: Build and Deploy with Docker Compose
         run: |
           docker compose build --no-cache
           docker compose up -d --force-recreate
+      
+      # --- THIS STEP IS MODIFIED ---
+      - name: Purge Cloudflare CSS Cache
+        if: success()
+        run: |
+          curl -X POST "https://api.cloudflare.com/client/v4/zones/${{ secrets.CLOUDFLARE_ZONE_ID }}/purge_cache" \
+            -H "Authorization: Bearer ${{ secrets.CLOUDFLARE_API_TOKEN }}" \
+            -H "Content-Type: application/json" \
+            --data '{"files":["https://www.${{ secrets.CLOUDFLARE_DOMAIN }}/css/output.css", "https://${{ secrets.CLOUDFLARE_DOMAIN }}/css/output.css"]}'
