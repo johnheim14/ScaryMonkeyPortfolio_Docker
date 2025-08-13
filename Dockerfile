@@ -2,7 +2,7 @@
 FROM nginx:alpine
 
 # Copy the website files to the NGINX html directory
-COPY ./src /usr/share/nginx/html
+COPY . /usr/share/nginx/html
 
 # Expose port 80 to the Docker host
 EXPOSE 80
