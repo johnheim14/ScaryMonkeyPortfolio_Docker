@@ -14,8 +14,8 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v4
 
-      # Use the modern "docker compose" command (with a space)
-      - name: Deploy with Docker Compose
+      # Docker now handles the entire build process, including Tailwind!
+      - name: Build and Deploy with Docker Compose
         run: |
           docker compose build --no-cache
           docker compose up -d --force-recreate
