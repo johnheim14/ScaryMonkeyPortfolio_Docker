@@ -1,31 +1,33 @@
-# === Stage 1: Build the Tailwind CSS and assemble final files ===
+# === Stage 1: Build the assets ===
 FROM node:20-alpine as builder
 
 WORKDIR /app
 
-# Copy package files and install dependencies
+# --- OPTIMIZATION START ---
+# 1. Copy only the package files first
 COPY package*.json ./
-COPY tailwind.config.js ./
-RUN npm install
 
-# Copy all source files
+# 2. Install dependencies. This layer will be cached as long as package.json doesn't change.
+RUN npm install
+# --- OPTIMIZATION END ---
+
+# 3. Copy the rest of your project source code
+COPY tailwind.config.js ./
 COPY src/ ./src/
 
-# Run the build script to compile the CSS
+# 4. Run the build script to compile CSS
 RUN npm run build
 
-# Copy the index.html from src into the final dist directory
+# 5. Assemble all final files into the /dist directory
 COPY src/index.html ./dist/
-
-# --- THIS IS THE NEW LINE ---
-# Copy the img folder from src into the final dist directory
-COPY src/img ./dist/img
+COPY src/img ./dist/img/
+COPY src/js ./dist/js/ # Proactively copy the js folder
 
 
 # === Stage 2: Serve the built files with NGINX ===
 FROM nginx:alpine
 
-# Copy the entire contents of the compiled 'dist' directory
+# Copy the entire contents of the compiled 'dist' directory from the builder stage
 COPY --from=builder /app/dist /usr/share/nginx/html
 
 # Expose port 80
