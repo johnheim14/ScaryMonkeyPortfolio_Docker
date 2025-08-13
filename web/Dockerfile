@@ -21,7 +21,7 @@ RUN npm run build
 # 5. Assemble all final files into the /dist directory
 COPY src/index.html ./dist/
 COPY src/img ./dist/img/
-COPY src/js ./dist/js/ # Proactively copy the js folder
+COPY src/js ./dist/js/
 
 
 # === Stage 2: Serve the built files with NGINX  ===
