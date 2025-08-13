@@ -16,8 +16,23 @@ RUN rm -rf /usr/share/nginx/html/*
 COPY --from=builder /app/src/. /usr/share/nginx/html/
 COPY --from=builder /app/dist/css /usr/share/nginx/html/css
 
-# Copy our custom entrypoint script and make it executable
-COPY entrypoint.sh /entrypoint.sh
+# Create the entrypoint script directly inside the Dockerfile to avoid COPY errors
+RUN <<EOF
+#!/bin/sh
+echo
+echo "##############################################"
+echo "##    RUNNING INLINE ENTRYPOINT SCRIPT      ##"
+echo "##############################################"
+echo
+echo "Forcing ownership and permissions..."
+chown -R nginx:nginx /usr/share/nginx/html
+chmod -R 755 /usr/share/nginx/html
+echo "Permissions set successfully."
+echo "Handing over to Nginx..."
+exec /docker-entrypoint.sh nginx -g 'daemon off;'
+EOF > /entrypoint.sh
+
+# Make the newly created script executable
 RUN chmod +x /entrypoint.sh
 
 EXPOSE 80
