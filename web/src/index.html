@@ -3,8 +3,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Scary Monkey Incorporated - 3D Portfolio</title>
-    <link id="favicon" rel="icon" type="image/png" href="img/SMI_Logo_White.png">
-    <link href="/css/output.css" rel="stylesheet">
+    <link id="favicon" rel="icon" type="image/vnd.microsoft.icon" href="./img/favicon.ico">
+    <link href="./css/output.css" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -43,7 +43,7 @@
     <header class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm sticky top-0 z-50 border-b border-gray-200 dark:border-gray-800">
         <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
             <a href="#" class="flex items-center space-x-3 rtl:space-x-reverse">
-                <img id="logo-nav" src="img/SMI_Logo_White.png" class="h-10" alt="Scary Monkey Inc. Logo" />
+                <img id="logo-nav" src="./img/SMI_Logo_White.png" class="h-10" alt="Scary Monkey Inc. Logo" />
                 <span class="self-center text-2xl font-bold whitespace-nowrap text-black dark:text-white">Scary Monkey <span class="text-orange-600 dark:text-orange-500">Inc.</span></span>
             </a>
             <div class="flex items-center space-x-8">
@@ -134,7 +134,7 @@
         <section id="about" class="py-16 bg-gray-100/50 dark:bg-gray-800/50 rounded-lg my-16">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
                 <div class="md:col-span-1 flex justify-center">
-                    <img id="logo-about" src="img/SMI_Logo_White.png" alt="Scary Monkey Inc. Logo" class="w-48 h-48 md:w-64 md:h-64 object-contain">
+                    <img id="logo-about" src="./img/SMI_Logo_White.png" alt="Scary Monkey Inc. Logo" class="w-48 h-48 md:w-64 md:h-64 object-contain">
                 </div>
                 <div class="md:col-span-2 text-center md:text-left">
                     <h2 class="text-3xl font-bold mb-4 text-black dark:text-white">About Scary Monkey Inc.</h2>
@@ -210,15 +210,15 @@
             if (document.documentElement.classList.contains('dark')) {
                 themeToggleLightIcon.classList.add('hidden');
                 themeToggleDarkIcon.classList.remove('hidden');
-                logoNav.src = 'img/SMI_Logo_White.png';
-                logoAbout.src = 'img/SMI_Logo_White.png';
-                favicon.href = 'img/SMI_Logo_White.png';
+                logoNav.src = './img/SMI_Logo_White.png';
+                logoAbout.src = './img/SMI_Logo_White.png';
+                favicon.href = './img/SMI_Logo_White.png';
             } else {
                 themeToggleDarkIcon.classList.add('hidden');
                 themeToggleLightIcon.classList.remove('hidden');
-                logoNav.src = 'img/SMI_Logo_Black.png';
-                logoAbout.src = 'img/SMI_Logo_Black.png';
-                favicon.href = 'img/SMI_Logo_Black.png';
+                logoNav.src = './img/SMI_Logo_Black.png';
+                logoAbout.src = './img/SMI_Logo_Black.png';
+                favicon.href = './img/SMI_Logo_Black.png';
             }
         };
 
