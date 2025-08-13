@@ -12,11 +12,10 @@ FROM nginx:alpine
 # Clean out the default Nginx content
 RUN rm -rf /usr/share/nginx/html/*
 
-# Copy the built assets and static files from the builder stage
+# Copy the built assets and static files
 COPY --from=builder /app/src/. /usr/share/nginx/html/
 COPY --from=builder /app/dist/css /usr/share/nginx/html/css
 
-# === ADD THIS LINE ===
 # Set the correct ownership and permissions for the Nginx user
 RUN chown -R nginx:nginx /usr/share/nginx/html && chmod -R 755 /usr/share/nginx/html
 
