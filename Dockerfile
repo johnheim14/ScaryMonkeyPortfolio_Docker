@@ -1,8 +1,11 @@
-# Use a simple, lightweight web server
+# Use the official NGINX image from Docker Hub
 FROM nginx:alpine
 
-# Copy the entire contents of your finished build folder 
-# to the web server's public directory.
-COPY ./dist /usr/share/nginx/html
+# Copy the website files to the NGINX html directory
+COPY . /usr/share/nginx/html
 
+# Expose port 80 to the Docker host
 EXPOSE 80
+
+# Start NGINX when the container launches
+CMD ["nginx", "-g", "daemon off;"]

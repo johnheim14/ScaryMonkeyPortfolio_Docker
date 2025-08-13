@@ -1,186 +1,158 @@
 <!DOCTYPE html>
-<html lang="en" class="dark"> <!-- Default to dark mode -->
-<head>
+<html lang="en" data-bs-theme="dark"> <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Scary Monkey Incorporated - 3D Portfolio</title>
-    <!-- Favicon -->
     <link id="favicon" rel="icon" type="image/png" href="img/SMI_Logo_White.png">
-    <!-- Link to the compiled stylesheet -->
-    <link href="/css/input.css" rel="stylesheet">
-    <!-- Google Fonts: Inter -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        /* Use the Inter font family */
         body {
             font-family: 'Inter', sans-serif;
         }
-        /* Simple scrollbar styling */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #f1f5f9; /* light mode track */
-        }
-        .dark ::-webkit-scrollbar-track {
-            background: #1f2937; /* dark mode track */
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #94a3b8; /* light mode thumb */
-            border-radius: 10px;
-        }
-        .dark ::-webkit-scrollbar-thumb {
-            background: #4b5563; /* dark mode thumb */
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #475569;
-        }
-        .dark ::-webkit-scrollbar-thumb:hover {
-            background: #6b7280;
-        }
     </style>
 </head>
-<body class="bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-200 transition-colors duration-500">
+<body class="bg-body text-body">
 
-    <!-- Header & Navigation -->
-    <header class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm sticky top-0 z-50 border-b border-gray-200 dark:border-gray-800">
-        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <!-- Logo and Company Name -->
-            <a href="#" class="flex items-center space-x-3 rtl:space-x-reverse">
-                <img id="logo-nav" src="img/SMI_Logo_White.png" class="h-10" alt="Scary Monkey Inc. Logo" />
-                <span class="self-center text-2xl font-bold whitespace-nowrap text-black dark:text-white">Scary Monkey <span class="text-orange-600 dark:text-orange-500">Inc.</span></span>
+    <header class="bg-body-tertiary sticky-top border-bottom">
+        <nav class="container navbar navbar-expand-md">
+            <a class="navbar-brand d-flex align-items-center" href="#">
+                <img id="logo-nav" src="img/SMI_Logo_White.png" alt="Scary Monkey Inc. Logo" style="height: 40px;">
+                <span class="ms-3 fs-4 fw-bold">Scary Monkey <span class="text-warning">Inc.</span></span>
             </a>
-            <div class="flex items-center space-x-8">
-                <ul class="hidden md:flex items-center space-x-8">
-                    <li><a href="#portfolio" class="hover:text-orange-600 dark:hover:text-orange-400 transition-colors duration-300">Portfolio</a></li>
-                    <li><a href="#about" class="hover:text-orange-600 dark:hover:text-orange-400 transition-colors duration-300">About</a></li>
-                    <li><a href="#contact" class="hover:text-orange-600 dark:hover:text-orange-400 transition-colors duration-300">Contact</a></li>
-                </ul>
-                 <!-- Theme Toggle Button -->
-                <button id="theme-toggle" type="button" class="text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5">
-                    <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
-                    <svg id="theme-toggle-light-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 5.05A1 1 0 016.465 3.636l.707.707a1 1 0 01-1.414 1.414l-.707-.707a1 1 0 010-1.414zM5 11a1 1 0 100-2H4a1 1 0 100 2h1zM8 16a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
+            <div class="d-flex align-items-center">
+                 <button id="theme-toggle" type="button" class="btn btn-outline-secondary me-3">
+                    <svg id="theme-toggle-dark-icon" class="d-none" width="20" height="20" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+                    <svg id="theme-toggle-light-icon" class="d-none" width="20" height="20" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 5.05A1 1 0 016.465 3.636l.707.707a1 1 0 01-1.414 1.414l-.707-.707a1 1 0 010-1.414zM5 11a1 1 0 100-2H4a1 1 0 100 2h1zM8 16a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
                 </button>
-                <button id="mobile-menu-button" class="md:hidden p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mobile-menu" aria-controls="mobile-menu" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
                 </button>
             </div>
+            <div class="collapse navbar-collapse" id="mobile-menu">
+                <ul class="navbar-nav ms-auto mb-2 mb-md-0">
+                    <li class="nav-item"><a href="#portfolio" class="nav-link">Portfolio</a></li>
+                    <li class="nav-item"><a href="#about" class="nav-link">About</a></li>
+                    <li class="nav-item"><a href="#contact" class="nav-link">Contact</a></li>
+                </ul>
+            </div>
         </nav>
-        <!-- Mobile Menu -->
-        <div id="mobile-menu" class="hidden md:hidden px-6 pb-4">
-            <a href="#portfolio" class="block py-2 hover:text-orange-600 dark:hover:text-orange-400">Portfolio</a>
-            <a href="#about" class="block py-2 hover:text-orange-600 dark:hover:text-orange-400">About</a>
-            <a href="#contact" class="block py-2 hover:text-orange-600 dark:hover:text-orange-400">Contact</a>
-        </div>
     </header>
 
-    <main class="container mx-auto px-6 py-12">
+    <main class="container my-5">
 
-        <!-- Hero Section -->
-        <section class="text-center py-16">
-            <h1 class="text-4xl md:text-6xl font-bold text-black dark:text-white leading-tight">
-                Crafting Worlds, One Polygon <br class="hidden md:block"> at a Time.
+        <section class="text-center py-5">
+            <h1 class="display-4 fw-bold">
+                Crafting Worlds, One Polygon at a Time.
             </h1>
-            <p class="mt-4 text-lg md:text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
+            <p class="lead text-muted my-4 mx-auto" style="max-width: 50rem;">
                 Welcome to the portfolio of Scary Monkey Inc., where we specialize in high-fidelity 3D models and immersive textures for games and film.
             </p>
-            <a href="#portfolio" class="mt-8 inline-block bg-orange-600 text-white font-semibold px-8 py-3 rounded-lg hover:bg-orange-700 transition-transform duration-300 transform hover:scale-105">
+            <a href="#portfolio" class="btn btn-warning btn-lg text-white fw-semibold">
                 View Our Work
             </a>
         </section>
 
-        <!-- Portfolio Section -->
-        <section id="portfolio" class="py-16">
-            <h2 class="text-3xl font-bold text-center mb-12 text-black dark:text-white">Portfolio Showcase</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <section id="portfolio" class="py-5">
+            <h2 class="display-5 fw-bold text-center mb-5">Portfolio Showcase</h2>
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
 
-                <!-- Portfolio Item -->
-                <div class="bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden group transform hover:-translate-y-2 transition-transform duration-300 shadow-md dark:shadow-none">
-                    <img src="https://placehold.co/600x400/e2e8f0/1f2937?text=Project+Alpha" alt="Portfolio Item 1" class="w-full h-64 object-cover">
-                    <div class="p-6">
-                        <h3 class="text-xl font-semibold text-black dark:text-white">Project Alpha</h3>
-                        <p class="mt-2 text-gray-600 dark:text-gray-400">A high-poly character model designed for a next-gen sci-fi title. Textured in Substance Painter.</p>
+                <div class="col">
+                    <div class="card h-100 shadow-sm">
+                        <img src="https://placehold.co/600x400/ffc107/495057?text=Project+Alpha" class="card-img-top" alt="Project Alpha">
+                        <div class="card-body">
+                            <h5 class="card-title fw-semibold">Project Alpha</h5>
+                            <p class="card-text text-muted">A high-poly character model designed for a next-gen sci-fi title. Textured in Substance Painter.</p>
+                        </div>
                     </div>
                 </div>
-                <div class="bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden group transform hover:-translate-y-2 transition-transform duration-300 shadow-md dark:shadow-none">
-                    <img src="https://placehold.co/600x400/e2e8f0/1f2937?text=Project+Beta" alt="Portfolio Item 2" class="w-full h-64 object-cover">
-                    <div class="p-6">
-                        <h3 class="text-xl font-semibold text-black dark:text-white">Project Beta</h3>
-                        <p class="mt-2 text-gray-600 dark:text-gray-400">An environment asset pack featuring modular, game-ready pieces for a fantasy setting.</p>
+                <div class="col">
+                    <div class="card h-100 shadow-sm">
+                        <img src="https://placehold.co/600x400/ffc107/495057?text=Project+Beta" class="card-img-top" alt="Project Beta">
+                        <div class="card-body">
+                            <h5 class="card-title fw-semibold">Project Beta</h5>
+                            <p class="card-text text-muted">An environment asset pack featuring modular, game-ready pieces for a fantasy setting.</p>
+                        </div>
                     </div>
                 </div>
-                <div class="bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden group transform hover:-translate-y-2 transition-transform duration-300 shadow-md dark:shadow-none">
-                    <img src="https://placehold.co/600x400/e2e8f0/1f2937?text=Project+Gamma" alt="Portfolio Item 3" class="w-full h-64 object-cover">
-                    <div class="p-6">
-                        <h3 class="text-xl font-semibold text-black dark:text-white">Project Gamma</h3>
-                        <p class="mt-2 text-gray-600 dark:text-gray-400">A realistic weapon model with 4K PBR textures, optimized for first-person view.</p>
+                <div class="col">
+                    <div class="card h-100 shadow-sm">
+                        <img src="https://placehold.co/600x400/ffc107/495057?text=Project+Gamma" class="card-img-top" alt="Project Gamma">
+                        <div class="card-body">
+                            <h5 class="card-title fw-semibold">Project Gamma</h5>
+                            <p class="card-text text-muted">A realistic weapon model with 4K PBR textures, optimized for first-person view.</p>
+                        </div>
                     </div>
                 </div>
-                 <div class="bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden group transform hover:-translate-y-2 transition-transform duration-300 shadow-md dark:shadow-none">
-                    <img src="https://placehold.co/600x400/e2e8f0/1f2937?text=Project+Delta" alt="Portfolio Item 4" class="w-full h-64 object-cover">
-                    <div class="p-6">
-                        <h3 class="text-xl font-semibold text-black dark:text-white">Project Delta</h3>
-                        <p class="mt-2 text-gray-600 dark:text-gray-400">Stylized vehicle concept, modeled in Blender and rendered in Eevee.</p>
+                 <div class="col">
+                    <div class="card h-100 shadow-sm">
+                        <img src="https://placehold.co/600x400/ffc107/495057?text=Project+Delta" class="card-img-top" alt="Project Delta">
+                        <div class="card-body">
+                            <h5 class="card-title fw-semibold">Project Delta</h5>
+                            <p class="card-text text-muted">Stylized vehicle concept, modeled in Blender and rendered in Eevee.</p>
+                        </div>
                     </div>
                 </div>
-                 <div class="bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden group transform hover:-translate-y-2 transition-transform duration-300 shadow-md dark:shadow-none">
-                    <img src="https://placehold.co/600x400/e2e8f0/1f2937?text=Project+Epsilon" alt="Portfolio Item 5" class="w-full h-64 object-cover">
-                    <div class="p-6">
-                        <h3 class="text-xl font-semibold text-black dark:text-white">Project Epsilon</h3>
-                        <p class="mt-2 text-gray-600 dark:text-gray-400">Photorealistic prop created using photogrammetry and ZBrush cleanup.</p>
+                <div class="col">
+                    <div class="card h-100 shadow-sm">
+                        <img src="https://placehold.co/600x400/ffc107/495057?text=Project+Epsilon" class="card-img-top" alt="Project Epsilon">
+                        <div class="card-body">
+                            <h5 class="card-title fw-semibold">Project Epsilon</h5>
+                            <p class="card-text text-muted">Photorealistic prop created using photogrammetry and ZBrush cleanup.</p>
+                        </div>
                     </div>
                 </div>
-                 <div class="bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden group transform hover:-translate-y-2 transition-transform duration-300 shadow-md dark:shadow-none">
-                    <img src="https://placehold.co/600x400/e2e8f0/1f2937?text=Project+Zeta" alt="Portfolio Item 6" class="w-full h-64 object-cover">
-                    <div class="p-6">
-                        <h3 class="text-xl font-semibold text-black dark:text-white">Project Zeta</h3>
-                        <p class="mt-2 text-gray-600 dark:text-gray-400">Creature concept sculpt. From digital clay to fully-rigged animation model.</p>
+                 <div class="col">
+                    <div class="card h-100 shadow-sm">
+                        <img src="https://placehold.co/600x400/ffc107/495057?text=Project+Zeta" class="card-img-top" alt="Project Zeta">
+                        <div class="card-body">
+                            <h5 class="card-title fw-semibold">Project Zeta</h5>
+                            <p class="card-text text-muted">Creature concept sculpt. From digital clay to fully-rigged animation model.</p>
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- About Section -->
-        <section id="about" class="py-16 bg-gray-100/50 dark:bg-gray-800/50 rounded-lg my-16">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
-                <div class="md:col-span-1 flex justify-center">
-                    <img id="logo-about" src="img/SMI_Logo_White.png" alt="Scary Monkey Inc. Logo" class="w-48 h-48 md:w-64 md:h-64 object-contain">
+        <section id="about" class="py-5 bg-body-tertiary rounded my-5">
+            <div class="row align-items-center">
+                <div class="col-md-4 text-center">
+                    <img id="logo-about" src="img/SMI_Logo_White.png" alt="Scary Monkey Inc. Logo" class="img-fluid" style="max-width: 200px;">
                 </div>
-                <div class="md:col-span-2 text-center md:text-left">
-                    <h2 class="text-3xl font-bold mb-4 text-black dark:text-white">About Scary Monkey Inc.</h2>
-                    <p class="text-gray-600 dark:text-gray-400 mb-4">
+                <div class="col-md-8 text-center text-md-start">
+                    <h2 class="display-5 fw-bold mb-4">About Scary Monkey Inc.</h2>
+                    <p class="text-muted mb-3">
                         Founded in a flurry of creative energy, Scary Monkey Inc. is a one-stop-shop for breathtaking 3D assets. With a passion for detail and a commitment to quality, we bring digital ideas to life. Our expertise spans character modeling, hard-surface objects, and environmental design.
                     </p>
-                    <p class="text-gray-600 dark:text-gray-400">
+                    <p class="text-muted">
                         We believe that great art tells a story. Let us help you tell yours.
                     </p>
                 </div>
             </div>
         </section>
 
-        <!-- Contact Section -->
-        <section id="contact" class="py-16">
-            <h2 class="text-3xl font-bold text-center mb-4 text-black dark:text-white">Get In Touch</h2>
-            <p class="text-gray-600 dark:text-gray-400 text-center mb-12 max-w-2xl mx-auto">
+        <section id="contact" class="py-5">
+            <h2 class="display-5 fw-bold text-center">Get In Touch</h2>
+            <p class="text-muted text-center mb-5 mx-auto" style="max-width: 40rem;">
                 Have a project in mind or just want to say hello? Send a message and let's create something amazing together.
             </p>
-            <form class="max-w-xl mx-auto">
-                <div class="mb-4">
-                    <label for="name" class="block text-gray-500 dark:text-gray-300 mb-2">Name</label>
-                    <input type="text" id="name" name="name" class="w-full bg-gray-200 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-orange-500">
+            <form class="mx-auto" style="max-width: 40rem;">
+                <div class="mb-3">
+                    <label for="name" class="form-label">Name</label>
+                    <input type="text" class="form-control" id="name" name="name">
+                </div>
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" class="form-control" id="email" name="email">
                 </div>
                 <div class="mb-4">
-                    <label for="email" class="block text-gray-500 dark:text-gray-300 mb-2">Email</label>
-                    <input type="email" id="email" name="email" class="w-full bg-gray-200 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-orange-500">
-                </div>
-                <div class="mb-6">
-                    <label for="message" class="block text-gray-500 dark:text-gray-300 mb-2">Message</label>
-                    <textarea id="message" name="message" rows="5" class="w-full bg-gray-200 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-orange-500"></textarea>
+                    <label for="message" class="form-label">Message</label>
+                    <textarea class="form-control" id="message" name="message" rows="5"></textarea>
                 </div>
                 <div class="text-center">
-                    <button type="submit" class="bg-orange-600 text-white font-semibold px-8 py-3 rounded-lg hover:bg-orange-700 transition-transform duration-300 transform hover:scale-105">
+                    <button type="submit" class="btn btn-warning btn-lg text-white fw-semibold">
                         Send Message
                     </button>
                 </div>
@@ -189,71 +161,55 @@
 
     </main>
 
-    <!-- Footer -->
-    <footer class="bg-gray-100 dark:bg-gray-800 mt-16">
-        <div class="container mx-auto px-6 py-6 text-center text-gray-500 dark:text-gray-400">
-            <p>&copy; 2024 Scary Monkey Incorporated. All Rights Reserved.</p>
+    <footer class="bg-body-tertiary mt-5">
+        <div class="container text-center py-4">
+            <p class="text-muted">&copy; 2024 Scary Monkey Incorporated. All Rights Reserved.</p>
         </div>
     </footer>
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script>
-        // Set theme on initial load
-        if (localStorage.theme === 'light' || (!('theme' in localStorage) && !window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-          document.documentElement.classList.remove('dark')
-        } else {
-          document.documentElement.classList.add('dark')
-        }
-        
-        // Mobile menu toggle
-        const mobileMenuButton = document.getElementById('mobile-menu-button');
-        const mobileMenu = document.getElementById('mobile-menu');
-        mobileMenuButton.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
-        });
-
-        // Theme toggle logic
         const themeToggleBtn = document.getElementById('theme-toggle');
         const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
         const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
         const logoNav = document.getElementById('logo-nav');
         const logoAbout = document.getElementById('logo-about');
         const favicon = document.getElementById('favicon');
+        const htmlElement = document.documentElement;
 
-        // Function to update UI based on theme
         const updateThemeUI = () => {
-            if (document.documentElement.classList.contains('dark')) {
-                themeToggleLightIcon.classList.add('hidden');
-                themeToggleDarkIcon.classList.remove('hidden');
+            const isDarkMode = htmlElement.getAttribute('data-bs-theme') === 'dark';
+            if (isDarkMode) {
+                themeToggleLightIcon.classList.add('d-none');
+                themeToggleDarkIcon.classList.remove('d-none');
                 logoNav.src = 'img/SMI_Logo_White.png';
                 logoAbout.src = 'img/SMI_Logo_White.png';
                 favicon.href = 'img/SMI_Logo_White.png';
             } else {
-                themeToggleDarkIcon.classList.add('hidden');
-                themeToggleLightIcon.classList.remove('hidden');
+                themeToggleDarkIcon.classList.add('d-none');
+                themeToggleLightIcon.classList.remove('d-none');
                 logoNav.src = 'img/SMI_Logo_Black.png';
                 logoAbout.src = 'img/SMI_Logo_Black.png';
                 favicon.href = 'img/SMI_Logo_Black.png';
             }
         };
 
-        // Set initial state of the toggle icon and logos
-        updateThemeUI();
-
-        // Listen for toggle button click
         themeToggleBtn.addEventListener('click', () => {
-            // toggle theme
-            document.documentElement.classList.toggle('dark');
-            
-            // update localStorage
-            if (document.documentElement.classList.contains('dark')) {
-                localStorage.theme = 'dark';
-            } else {
-                localStorage.theme = 'light';
-            }
-
-            // update UI
+            const isDarkMode = htmlElement.getAttribute('data-bs-theme') === 'dark';
+            htmlElement.setAttribute('data-bs-theme', isDarkMode ? 'light' : 'dark');
+            localStorage.setItem('theme', isDarkMode ? 'light' : 'dark');
             updateThemeUI();
         });
+
+        // Set initial theme based on localStorage or system preference
+        const storedTheme = localStorage.getItem('theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        if (storedTheme) {
+            htmlElement.setAttribute('data-bs-theme', storedTheme);
+        } else {
+            htmlElement.setAttribute('data-bs-theme', prefersDark ? 'dark' : 'light');
+        }
+        updateThemeUI();
     </script>
 
 </body>
