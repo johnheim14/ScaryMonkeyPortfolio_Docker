@@ -1,7 +1,7 @@
 services:
   scary-monkey-web:
     build:
-      context: ./web
+      context: .
     ports:
       - "4080:80"
     restart: unless-stopped
