@@ -24,7 +24,7 @@ COPY src/img ./dist/img/
 COPY src/js ./dist/js/ # Proactively copy the js folder
 
 
-# === Stage 2: Serve the built files with NGINX ===
+# === Stage 2: Serve the built files with NGINX  ===
 FROM nginx:alpine
 
 # Copy the entire contents of the compiled 'dist' directory from the builder stage
