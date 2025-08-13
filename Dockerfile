@@ -1,27 +1,27 @@
+# Stage 1: Build the frontend assets
 FROM node:18-alpine AS builder
 WORKDIR /app
 
-RUN mkdir -p /var/cache/nginx/client_temp && \
-    chown -R nginx:nginx /var/cache/nginx
-
-RUN rm -rf /usr/share/nginx/html/*
-
+# Copy package files and install dependencies
 COPY package*.json ./
 RUN npm install
 
+# Copy the rest of the application source
 COPY . .
 
-# Make sure dist exists to avoid mkdir errors
-RUN mkdir -p dist/css
-
+# Run the build script to generate CSS
 RUN npm run build
 
+# Stage 2: Serve the application with Nginx
 FROM nginx:alpine
+
+# Clean out the default Nginx content
 RUN rm -rf /usr/share/nginx/html/*
 
-COPY --from=builder /app/src /usr/share/nginx/html
+# Copy the HTML, images, and JS from the src directory's contents
+COPY --from=builder /app/src/. /usr/share/nginx/html/
+
+# Copy the compiled CSS from the dist directory
 COPY --from=builder /app/dist/css /usr/share/nginx/html/css
-COPY --from=builder /app/src/img /usr/share/nginx/html/img
-COPY --from=builder /app/src/js /usr/share/nginx/html/js
 
 EXPOSE 80
