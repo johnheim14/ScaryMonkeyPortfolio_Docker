@@ -16,7 +16,9 @@ RUN rm -rf /usr/share/nginx/html/*
 COPY --from=builder /app/src/. /usr/share/nginx/html/
 COPY --from=builder /app/dist/css /usr/share/nginx/html/css
 
-# Set the correct ownership and permissions for the Nginx user
-RUN chown -R nginx:nginx /usr/share/nginx/html && chmod -R 755 /usr/share/nginx/html
+# Copy our custom entrypoint script and make it executable
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
 
-EXPOSE 80
+# Set our script as the container's entrypoint
+ENTRYPOINT ["/entrypoint.sh"]
