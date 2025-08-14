@@ -8,6 +8,7 @@ export default defineConfig({
     outDir: '../dist',
     rollupOptions: {
       input: {
+        // The path to your HTML file remains the same
         main: resolve(__dirname, 'src/index.html'),
       },
     },
@@ -15,7 +16,6 @@ export default defineConfig({
   server: {
     host: '0.0.0.0',
     port: 5173,
-    // This is the fix: Force Vite to watch the Tailwind config file for changes.
     watch: {
       usePolling: true,
       include: ['../tailwind.config.js'],
