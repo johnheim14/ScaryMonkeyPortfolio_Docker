@@ -20,29 +20,21 @@
     <style>
       body {
         font-family: "Inter", sans-serif;
-        background-color: transparent;
-      }
-      body::before {
-        content: "";
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100vw;
-        height: 100vh;
-        z-index: -1; /* Place it behind all content */
         background-image: radial-gradient(
-          ellipse at top,
-          rgba(50, 229, 92, 0.1),
-          transparent 60%
+          circle at 1px 1px,
+          #cbd5e1 1px,
+          transparent 0
         );
+        background-size: 2rem 2rem;
       }
 
-      .dark body::before {
+      .dark body {
         background-image: radial-gradient(
-          ellipse at top,
-          rgba(12, 234, 56, 0.15),
-          transparent 70%
+          circle at 1px 1px,
+          #475569 1px,
+          transparent 0
         );
+        background-size: 2rem 2rem;
       }
       ::-webkit-scrollbar {
         width: 8px;
