@@ -20,6 +20,29 @@
     <style>
       body {
         font-family: "Inter", sans-serif;
+        background-color: transparent;
+      }
+      body::before {
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        z-index: -1; /* Place it behind all content */
+        background-image: radial-gradient(
+          ellipse at top,
+          rgba(229, 122, 50, 0.1),
+          transparent 60%
+        );
+      }
+
+      .dark body::before {
+        background-image: radial-gradient(
+          ellipse at top,
+          rgba(234, 88, 12, 0.15),
+          transparent 70%
+        );
       }
       ::-webkit-scrollbar {
         width: 8px;
@@ -65,11 +88,10 @@
             class="self-center text-2xl font-bold whitespace-nowrap text-black dark:text-white"
             >Scary Monkey
             <span class="text-emerald-600 dark:text-emerald-500">
-                <span class="hidden md:inline">Incorporated.</span>
-                <span class="inline md:hidden">Inc.</span>
+              <span class="hidden md:inline">Incorporated.</span>
+              <span class="inline md:hidden">Inc.</span>
             </span>
-        </span
-          >
+          </span>
         </a>
         <div class="flex items-center space-x-8">
           <ul class="hidden md:flex items-center space-x-8">
@@ -365,7 +387,12 @@
         >
           Have a project in mind or just want to say hello? Send a message!
         </p>
-        <form id="contact-form" action="https://formspree.io/f/mgvzqovw" method="POST" class="max-w-xl mx-auto">
+        <form
+          id="contact-form"
+          action="https://formspree.io/f/mgvzqovw"
+          method="POST"
+          class="max-w-xl mx-auto"
+        >
           <div class="mb-4">
             <label
               for="name"
@@ -951,7 +978,7 @@
           favicon.href = "./img/favicon.ico";
         }
       };
-      
+
       updateThemeUI();
 
       themeToggleBtn.addEventListener("click", () => {
@@ -975,7 +1002,9 @@
               modal.classList.remove("hidden");
               setTimeout(() => {
                 modal.classList.remove("opacity-0");
-                modal.querySelector(".modal-content").classList.remove("scale-95");
+                modal
+                  .querySelector(".modal-content")
+                  .classList.remove("scale-95");
               }, 10);
               initializeCarousel(modal);
             }
@@ -984,7 +1013,7 @@
 
         function closeModal(modal) {
           // Pause and reset any video in the modal
-          const video = modal.querySelector('video');
+          const video = modal.querySelector("video");
           if (video) {
             video.pause();
             video.currentTime = 0;
@@ -1015,7 +1044,7 @@
         function initializeCarousel(modal) {
           const slides = modal.querySelectorAll(".carousel-slide");
           if (slides.length === 0) return;
-          
+
           const prevButton = modal.querySelector(".carousel-prev");
           const nextButton = modal.querySelector(".carousel-next");
           let currentSlide = 0;
@@ -1027,56 +1056,64 @@
           }
 
           if (prevButton && nextButton) {
-              prevButton.addEventListener("click", (e) => {
-                e.stopPropagation();
-                currentSlide = (currentSlide > 0) ? currentSlide - 1 : slides.length - 1;
-                showSlide(currentSlide);
-              });
+            prevButton.addEventListener("click", (e) => {
+              e.stopPropagation();
+              currentSlide =
+                currentSlide > 0 ? currentSlide - 1 : slides.length - 1;
+              showSlide(currentSlide);
+            });
 
-              nextButton.addEventListener("click", (e) => {
-                e.stopPropagation();
-                currentSlide = (currentSlide < slides.length - 1) ? currentSlide + 1 : 0;
-                showSlide(currentSlide);
-              });
+            nextButton.addEventListener("click", (e) => {
+              e.stopPropagation();
+              currentSlide =
+                currentSlide < slides.length - 1 ? currentSlide + 1 : 0;
+              showSlide(currentSlide);
+            });
           }
-          
+
           showSlide(currentSlide);
         }
 
         // --- CONTACT FORM SCRIPT ---
-        const form = document.getElementById('contact-form');
-        const formStatus = document.getElementById('form-status');
+        const form = document.getElementById("contact-form");
+        const formStatus = document.getElementById("form-status");
 
         async function handleSubmit(event) {
-            event.preventDefault();
-            const data = new FormData(event.target);
-            fetch(event.target.action, {
-                method: form.method,
-                body: data,
-                headers: {
-                    'Accept': 'application/json'
-                }
-            }).then(response => {
-                if (response.ok) {
-                    formStatus.textContent = "Thanks for your submission!";
-                    formStatus.classList.add('text-green-500');
-                    form.reset()
-                } else {
-                    response.json().then(data => {
-                        if (Object.hasOwn(data, 'errors')) {
-                            formStatus.textContent = data["errors"].map(error => error["message"]).join(", ")
-                        } else {
-                            formStatus.textContent = "Oops! There was a problem submitting your form";
-                            formStatus.classList.add('text-red-500');
-                        }
-                    })
-                }
-            }).catch(error => {
-                formStatus.textContent = "Oops! There was a problem submitting your form";
-                formStatus.classList.add('text-red-500');
+          event.preventDefault();
+          const data = new FormData(event.target);
+          fetch(event.target.action, {
+            method: form.method,
+            body: data,
+            headers: {
+              Accept: "application/json",
+            },
+          })
+            .then((response) => {
+              if (response.ok) {
+                formStatus.textContent = "Thanks for your submission!";
+                formStatus.classList.add("text-green-500");
+                form.reset();
+              } else {
+                response.json().then((data) => {
+                  if (Object.hasOwn(data, "errors")) {
+                    formStatus.textContent = data["errors"]
+                      .map((error) => error["message"])
+                      .join(", ");
+                  } else {
+                    formStatus.textContent =
+                      "Oops! There was a problem submitting your form";
+                    formStatus.classList.add("text-red-500");
+                  }
+                });
+              }
+            })
+            .catch((error) => {
+              formStatus.textContent =
+                "Oops! There was a problem submitting your form";
+              formStatus.classList.add("text-red-500");
             });
         }
-        form.addEventListener("submit", handleSubmit)
+        form.addEventListener("submit", handleSubmit);
       });
     </script>
   </body>
