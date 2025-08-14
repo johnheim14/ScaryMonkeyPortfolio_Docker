@@ -1,0 +1,8 @@
+# Ignore Node dependencies folder
+node_modules
+
+# Ignore the compiled CSS file generated in the source directory during local development
+web/src/css/output.css
+
+# Ignore local Docker Compose overrides
+docker-compose.override.yml

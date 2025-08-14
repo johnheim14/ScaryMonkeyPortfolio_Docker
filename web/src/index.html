@@ -10,7 +10,7 @@
       type="image/vnd.microsoft.icon"
       href="./img/favicon.ico"
     />
-    <link href="./css/output.css" rel="stylesheet" />
+    <script type="module" src="./js/main.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -20,21 +20,21 @@
     <style>
       body {
         font-family: "Inter", sans-serif;
-        background-image: radial-gradient(
-          circle at 1px 1px,
-          #cbd5e1 1px,
-          transparent 0
-        );
-        background-size: 2rem 2rem;
+        /* Set a fallback background color */
+        background-color: #ffffff;
       }
-
       .dark body {
-        background-image: radial-gradient(
-          circle at 1px 1px,
-          #475569 1px,
-          transparent 0
-        );
-        background-size: 2rem 2rem;
+         /* Dark mode fallback */
+         background-color: #111827;
+      }
+      /* New canvas styling */
+      #interactive-bg {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1; /* Keep it behind all content */
       }
       ::-webkit-scrollbar {
         width: 8px;
@@ -63,6 +63,7 @@
   <body
     class="bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-200 transition-colors duration-500"
   >
+    <canvas id="interactive-bg"></canvas>
     <header
       class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm sticky top-0 z-50 border-b border-gray-200 dark:border-gray-800"
     >
@@ -181,17 +182,16 @@
     </header>
 
     <main class="container mx-auto px-6 py-12">
-      <section class="text-center py-16">
-        <h1
-          class="text-4xl md:text-6xl font-bold text-black dark:text-white leading-tight"
-        >
-          Concept. Model. <br class="hidden md:block" />
-        </h1>
-        <h1
-          class="text-4xl md:text-6xl font-bold text-emerald-600 dark:text-emerald-500 leading-tight"
-        >
-          Create.
-        </h1>
+  <section class="text-center py-16">
+    <!-- Wrapper div to help with centering the animation -->
+    <div class="inline-block">
+      <h1
+        class="text-4xl md:text-6xl font-bold text-black dark:text-white leading-tight overflow-hidden whitespace-nowrap border-r-4 border-r-emerald-500 pr-1 animate-typing"
+      >
+        Concept. Model.
+        <span class="text-emerald-600 dark:text-emerald-500">Create.</span>
+      </h1>
+    </div>
         <p
           class="mt-4 text-lg md:text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto"
         >
@@ -334,7 +334,7 @@
 
       <section
         id="about"
-        class="py-16 bg-gray-100/50 dark:bg-gray-800/50 rounded-lg my-16 px-6"
+        class="py-16 bg-gray-100/50 dark:bg-gray-800/50 rounded-lg my-16 px-8"
       >
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
           <div class="md:col-span-1 flex justify-center">
@@ -351,18 +351,18 @@
             </h2>
             <p class="text-gray-600 dark:text-gray-400 mb-4">
               Welcome to Scary Monkey Incorporated, the culmination of a passion
-              for digital art that began over 20 years ago.
-              My journey into 3D modeling started in 2008 with Blender, and I've
-              spent more than a decade honing my craft and bringing complex
-              ideas to life.<br>
+              for digital art that began over 20 years ago. My journey into 3D
+              modeling started in 2008 with Blender, and I've spent more than a
+              decade honing my craft and bringing complex ideas to life.<br />
+              &nbsp;<br />
               My expertise isn't limited to a single discipline; I have a
               comprehensive skillset that includes graphic design, web
               development, and game development, giving me a holistic
-              understanding of the entire creative pipeline.
-              I am currently furthering my technical foundation by pursuing a
-              degree in Computer Science. This unique blend of artistic vision
-              and software development knowledge allows me to tackle creative
-              challenges from every angle.</p>
+              understanding of the entire creative pipeline. I am currently
+              furthering my technical foundation by pursuing a degree in
+              Computer Science. This unique blend of artistic vision and
+              software development knowledge allows me to tackle creative
+              challenges from every angle.
             </p>
           </div>
         </div>
@@ -920,191 +920,5 @@
         </div>
       </div>
     </div>
-
-    <script>
-      // --- THEME TOGGLE SCRIPT ---
-      // Set theme on initial load
-      if (
-        localStorage.theme === "light" ||
-        (!("theme" in localStorage) &&
-          !window.matchMedia("(prefers-color-scheme: dark)").matches)
-      ) {
-        document.documentElement.classList.remove("dark");
-      } else {
-        document.documentElement.classList.add("dark");
-      }
-
-      // Mobile menu toggle
-      const mobileMenuButton = document.getElementById("mobile-menu-button");
-      const mobileMenu = document.getElementById("mobile-menu");
-      mobileMenuButton.addEventListener("click", () => {
-        mobileMenu.classList.toggle("hidden");
-      });
-
-      // Theme toggle logic
-      const themeToggleBtn = document.getElementById("theme-toggle");
-      const themeToggleDarkIcon = document.getElementById(
-        "theme-toggle-dark-icon"
-      );
-      const themeToggleLightIcon = document.getElementById(
-        "theme-toggle-light-icon"
-      );
-      const logoNav = document.getElementById("logo-nav");
-      const logoAbout = document.getElementById("logo-about");
-      const favicon = document.getElementById("favicon");
-
-      const updateThemeUI = () => {
-        if (document.documentElement.classList.contains("dark")) {
-          themeToggleLightIcon.classList.add("hidden");
-          themeToggleDarkIcon.classList.remove("hidden");
-          logoNav.src = "./img/SMI_Logo_White.png";
-          logoAbout.src = "./img/SMI_Logo_White.png";
-          favicon.href = "./img/favicon.ico";
-        } else {
-          themeToggleDarkIcon.classList.add("hidden");
-          themeToggleLightIcon.classList.remove("hidden");
-          logoNav.src = "./img/SMI_Logo_Black.png";
-          logoAbout.src = "./img/SMI_Logo_Black.png";
-          favicon.href = "./img/favicon.ico";
-        }
-      };
-
-      updateThemeUI();
-
-      themeToggleBtn.addEventListener("click", () => {
-        document.documentElement.classList.toggle("dark");
-        if (document.documentElement.classList.contains("dark")) {
-          localStorage.theme = "dark";
-        } else {
-          localStorage.theme = "light";
-        }
-        updateThemeUI();
-      });
-
-      // --- MODAL AND CAROUSEL SCRIPT ---
-      document.addEventListener("DOMContentLoaded", () => {
-        const projectCards = document.querySelectorAll("[data-modal-target]");
-
-        projectCards.forEach((card) => {
-          card.addEventListener("click", () => {
-            const modal = document.querySelector(card.dataset.modalTarget);
-            if (modal) {
-              modal.classList.remove("hidden");
-              setTimeout(() => {
-                modal.classList.remove("opacity-0");
-                modal
-                  .querySelector(".modal-content")
-                  .classList.remove("scale-95");
-              }, 10);
-              initializeCarousel(modal);
-            }
-          });
-        });
-
-        function closeModal(modal) {
-          // Pause and reset any video in the modal
-          const video = modal.querySelector("video");
-          if (video) {
-            video.pause();
-            video.currentTime = 0;
-          }
-
-          modal.classList.add("opacity-0");
-          modal.querySelector(".modal-content").classList.add("scale-95");
-          setTimeout(() => {
-            modal.classList.add("hidden");
-          }, 300);
-        }
-
-        document.querySelectorAll(".close-modal-btn").forEach((btn) => {
-          btn.addEventListener("click", () => {
-            closeModal(btn.closest(".project-modal"));
-          });
-        });
-
-        document.querySelectorAll(".project-modal").forEach((modal) => {
-          modal.addEventListener("click", (event) => {
-            // We check if the click is on the modal-content's parent, which is the backdrop
-            if (event.target === modal) {
-              closeModal(modal);
-            }
-          });
-        });
-
-        function initializeCarousel(modal) {
-          const slides = modal.querySelectorAll(".carousel-slide");
-          if (slides.length === 0) return;
-
-          const prevButton = modal.querySelector(".carousel-prev");
-          const nextButton = modal.querySelector(".carousel-next");
-          let currentSlide = 0;
-
-          function showSlide(index) {
-            slides.forEach((slide, i) => {
-              slide.classList.toggle("hidden", i !== index);
-            });
-          }
-
-          if (prevButton && nextButton) {
-            prevButton.addEventListener("click", (e) => {
-              e.stopPropagation();
-              currentSlide =
-                currentSlide > 0 ? currentSlide - 1 : slides.length - 1;
-              showSlide(currentSlide);
-            });
-
-            nextButton.addEventListener("click", (e) => {
-              e.stopPropagation();
-              currentSlide =
-                currentSlide < slides.length - 1 ? currentSlide + 1 : 0;
-              showSlide(currentSlide);
-            });
-          }
-
-          showSlide(currentSlide);
-        }
-
-        // --- CONTACT FORM SCRIPT ---
-        const form = document.getElementById("contact-form");
-        const formStatus = document.getElementById("form-status");
-
-        async function handleSubmit(event) {
-          event.preventDefault();
-          const data = new FormData(event.target);
-          fetch(event.target.action, {
-            method: form.method,
-            body: data,
-            headers: {
-              Accept: "application/json",
-            },
-          })
-            .then((response) => {
-              if (response.ok) {
-                formStatus.textContent = "Thanks for your submission!";
-                formStatus.classList.add("text-green-500");
-                form.reset();
-              } else {
-                response.json().then((data) => {
-                  if (Object.hasOwn(data, "errors")) {
-                    formStatus.textContent = data["errors"]
-                      .map((error) => error["message"])
-                      .join(", ");
-                  } else {
-                    formStatus.textContent =
-                      "Oops! There was a problem submitting your form";
-                    formStatus.classList.add("text-red-500");
-                  }
-                });
-              }
-            })
-            .catch((error) => {
-              formStatus.textContent =
-                "Oops! There was a problem submitting your form";
-              formStatus.classList.add("text-red-500");
-            });
-        }
-        form.addEventListener("submit", handleSubmit);
-      });
-    </script>
   </body>
 </html>
