@@ -16,7 +16,7 @@ jobs:
 
       - name: Build and Deploy with Docker Compose
         run: |
-          docker compose build --no-cache
+          docker compose build
           docker compose up -d --force-recreate
       
       - name: Purge Cloudflare CSS Cache for WWW
