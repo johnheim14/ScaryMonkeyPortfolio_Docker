@@ -29,9 +29,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const isDark = document.documentElement.classList.contains("dark");
         themeToggleLightIcon.classList.toggle("hidden", isDark);
         themeToggleDarkIcon.classList.toggle("hidden", !isDark);
-        logoNav.src = isDark ? "/img/SMI_Logo_White.png" : "/img/SMI_Logo_Black.png";
-        logoAbout.src = isDark ? "/img/SMI_Logo_White.png" : "/img/SMI_Logo_Black.png";
-        favicon.href = "/img/favicon.ico";
+        logoNav.src = isDark ? "./img/SMI_Logo_White.png" : "./img/SMI_Logo_Black.png";
+        logoAbout.src = isDark ? "./img/SMI_Logo_White.png" : "./img/SMI_Logo_Black.png";
+        favicon.href = "./img/favicon.ico";
     };
 
     themeToggleBtn.addEventListener("click", () => {
