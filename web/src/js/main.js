@@ -2,6 +2,9 @@
 
 import '../input.css';
 import * as THREE from 'three';
+import logoWhite from '../img/SMI_Logo_White.png';
+import logoBlack from '../img/SMI_Logo_Black.png';
+import faviconImg from '../img/favicon.ico';
 
 document.addEventListener('DOMContentLoaded', () => {
 
@@ -29,9 +32,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const isDark = document.documentElement.classList.contains("dark");
         themeToggleLightIcon.classList.toggle("hidden", isDark);
         themeToggleDarkIcon.classList.toggle("hidden", !isDark);
-        logoNav.src = isDark ? "/img/SMI_Logo_White.png" : "/img/SMI_Logo_Black.png";
-        logoAbout.src = isDark ? "/img/SMI_Logo_White.png" : "/img/SMI_Logo_Black.png";
-        favicon.href = "/img/favicon.ico";
+        logoNav.src = isDark ? logoWhite : logoBlack;
+        logoAbout.src = isDark ? logoWhite : logoBlack;
+        favicon.href = faviconImg;
     };
 
     themeToggleBtn.addEventListener("click", () => {
