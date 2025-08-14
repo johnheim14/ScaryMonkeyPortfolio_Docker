@@ -29,9 +29,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const isDark = document.documentElement.classList.contains("dark");
         themeToggleLightIcon.classList.toggle("hidden", isDark);
         themeToggleDarkIcon.classList.toggle("hidden", !isDark);
-        logoNav.src = isDark ? "../img/SMI_Logo_White.png" : "../img/SMI_Logo_Black.png";
-        logoAbout.src = isDark ? "../img/SMI_Logo_White.png" : "../img/SMI_Logo_Black.png";
-        favicon.href = "../img/favicon.ico";
+        logoNav.src = isDark ? "./img/SMI_Logo_White.png" : "./img/SMI_Logo_Black.png";
+        logoAbout.src = isDark ? "./img/SMI_Logo_White.png" : "./img/SMI_Logo_Black.png";
+        favicon.href = "./img/favicon.ico";
     };
 
     themeToggleBtn.addEventListener("click", () => {
@@ -164,49 +164,53 @@ if (canvas) {
         });
 
         cubes.forEach(cube => {
-            const dx = cube.position.x - intersectPoint.x;
-            const dz = cube.position.z - intersectPoint.z;
-            const dist = Math.sqrt(dx * dx + dz * dz);
+    const dx = cube.position.x - intersectPoint.x;
+    const dz = cube.position.z - intersectPoint.z;
+    const dist = Math.sqrt(dx * dx + dz * dz);
 
-            // Mouse hover trail
-            if (dist < radius) {
-                const proximity = 1 - dist / radius;
-                cube.trail = Math.max(cube.trail, proximity);
-            } else {
-                cube.trail *= 0.95;
-            }
+    // Mouse hover trail
+    if (dist < radius) {
+        const proximity = 1 - dist / radius;
+        cube.trail = Math.max(cube.trail, proximity);
+    } else {
+        cube.trail *= 0.95;
+    }
 
-            // Shockwave effects with ripple delay and lingering trail
-            let shockFactor = 0;
-            shockwaves.forEach(wave => {
-                const sx = cube.position.x - wave.center.x;
-                const sz = cube.position.z - wave.center.z;
-                const sDist = Math.sqrt(sx * sx + sz * sz);
+    // Shockwave effects with ripple delay
+    let shockFactor = 0;
+    shockwaves.forEach(wave => {
+        const sx = cube.position.x - wave.center.x;
+        const sz = cube.position.z - wave.center.z;
+        const sDist = Math.sqrt(sx * sx + sz * sz);
 
-                const delay = 25; // controls ripple width
-                const waveInfluence = Math.max(0, 1 - Math.abs(sDist - wave.radius) / delay);
-                shockFactor = Math.max(shockFactor, waveInfluence * wave.strength);
+        const delay = 25;
+        const waveInfluence = Math.max(0, 1 - Math.abs(sDist - wave.radius) / delay);
+        shockFactor = Math.max(shockFactor, waveInfluence * wave.strength);
 
-                if (waveInfluence > 0.01) cube.trail = Math.max(cube.trail, waveInfluence * 0.7);
-            });
+        if (waveInfluence > 0.01) cube.trail = Math.max(cube.trail, waveInfluence * 0.7);
+    });
 
-            const targetScaleY = initialHeight + (hoverHeight - initialHeight) * cube.trail + shockFactor;
-            const colorFactor = Math.min(1, cube.trail * 0.7 + shockFactor * 0.8);
-            const speed = cube.trail > 0 || shockFactor > 0 ? riseSpeed : fallSpeed;
+    const targetScaleY = initialHeight + (hoverHeight - initialHeight) * cube.trail + shockFactor;
+    const colorFactor = Math.min(1, cube.trail * 0.7 + shockFactor * 0.8);
+    const speed = cube.trail > 0 || shockFactor > 0 ? riseSpeed : fallSpeed;
 
-            // Smooth interpolation with snap threshold
-            const difference = targetScaleY - cube.scale.y;
-            if (Math.abs(difference) < 0.001) cube.scale.y = targetScaleY;
-            else cube.scale.y += difference * speed;
+    // Smooth interpolation with snap threshold
+    const difference = targetScaleY - cube.scale.y;
+    if (Math.abs(difference) < 0.001) cube.scale.y = targetScaleY;
+    else cube.scale.y += difference * speed;
 
-            // Adaptive jitter (less jitter as cube reaches target)
-            const jitterAmplitude = 0.02 * Math.min(1, Math.abs(difference) * 50);
-            cube.scale.y += Math.sin(Date.now() * 0.002 + cube.randomOffset) * jitterAmplitude;
+    // Adaptive jitter
+    const jitterAmplitude = 0.02 * Math.min(1, Math.abs(difference) * 50);
+    cube.scale.y += Math.sin(Date.now() * 0.002 + cube.randomOffset) * jitterAmplitude;
 
-            // Color interpolation
-            const targetColor = shockFactor > 0 ? currentColors.shock : currentColors.hover;
-            cube.material.color.copy(baseColor).lerp(targetColor, colorFactor);
-        });
+    // Height-based glow: brighter when taller
+    const glowFactor = THREE.MathUtils.clamp((cube.scale.y - initialHeight) / (hoverHeight + 1), 0, 1);
+
+    const targetColor = shockFactor > 0 ? currentColors.shock : currentColors.hover;
+    const glowColor = targetColor.clone().lerp(new THREE.Color(0xffffff), glowFactor * 0.5); // Blend toward white
+    cube.material.color.copy(baseColor).lerp(glowColor, colorFactor);
+});
+
 
         renderer.render(scene, camera);
     }
