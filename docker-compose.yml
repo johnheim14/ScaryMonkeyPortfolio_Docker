@@ -1,7 +1,19 @@
 services:
   scary-monkey-web:
-    build:
-      context: ./web
+    image: ghcr.io/johnheim14/scarymonkeyportfolio_docker:latest
     ports:
       - "4080:80"
+    restart: unless-stopped
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+
+  # Polls GHCR and redeploys scary-monkey-web whenever GitHub Actions publishes a new image
+  watchtower:
+    image: nickfedor/watchtower:latest
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - WATCHTOWER_LABEL_ENABLE=true
+      - WATCHTOWER_CLEANUP=true
+      - WATCHTOWER_POLL_INTERVAL=300
     restart: unless-stopped
