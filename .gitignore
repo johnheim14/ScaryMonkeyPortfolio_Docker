@@ -6,3 +6,8 @@ web/src/css/output.css
 
 # Ignore local Docker Compose overrides
 docker-compose.override.yml
+
+# Claude Code local files
+.claude/
+CLAUDE.md
+CLAUDE.local.md

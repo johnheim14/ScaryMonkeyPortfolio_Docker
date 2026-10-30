@@ -43,177 +43,141 @@ document.addEventListener('DOMContentLoaded', () => {
         updateThemeUI();
     });
 
-// --- 3D CUBE BACKGROUND WITH ORGANIC TRAIL & FADED SHOCKWAVE ---
+// --- WIREFRAME WAVE BACKGROUND WITH CURSOR RIPPLES ---
 const canvas = document.getElementById('interactive-bg');
 if (canvas) {
     const scene = new THREE.Scene();
 
-    const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
-    camera.position.set(0, 200, 0);
-    camera.lookAt(0, 0, 0);
-    camera.up.set(0, 0, -1);
+    // Low, tilted camera so the grid reads as a rolling surface fading into the distance
+    const camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 1, 2000);
+    camera.position.set(0, 90, 160);
+    camera.lookAt(0, 0, -40);
 
     const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.setSize(window.innerWidth, window.innerHeight);
 
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
-    scene.add(ambientLight);
-    const directionalLight = new THREE.DirectionalLight(0xfff2e5, 1.5);
-    directionalLight.position.set(80, 150, 80);
-    scene.add(directionalLight);
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const timeScale = reduceMotion ? 0.25 : 1;
 
-    let cubes = [];
-    const spacing = 20;
-    const cubeSize = spacing * 1.01;
-    const initialHeight = 0.05;
-    const hoverHeight = 15;
-    const riseSpeed = 0.3;
-    const fallSpeed = 0.02;
-
-    // Colors for light/dark mode
+    // Colors for light/dark mode (fog matches the page background so the far edge fades out)
     const lightMode = {
-        cube: new THREE.Color(0xffffff),
-        hover: new THREE.Color(0x374151), // dark gray
-        shock: new THREE.Color(0xd1d5db)  // light gray
+        line: new THREE.Color(0xcbd5e1),   // slate-300
+        ripple: new THREE.Color(0x10b981), // emerald-500
+        fog: new THREE.Color(0xffffff)
     };
     const darkMode = {
-        cube: new THREE.Color(0x1e293b), // dark blue
-        hover: new THREE.Color(0xd1d5db), // light gray
-        shock: new THREE.Color(0xd1d5db)
+        line: new THREE.Color(0x334155),   // slate-700
+        ripple: new THREE.Color(0x34d399), // emerald-400
+        fog: new THREE.Color(0x111827)
     };
-    let currentColors = lightMode;
+    let currentColors = darkMode;
+    scene.fog = new THREE.Fog(currentColors.fog, 120, 520);
 
-    const geometry = new THREE.BoxGeometry(cubeSize, 1, cubeSize);
-    const shockwaves = [];
+    // A subdivided plane renders as a grid of triangles in wireframe mode
+    const geometry = new THREE.PlaneGeometry(900, 600, 110, 70);
+    geometry.rotateX(-Math.PI / 2);
+    const positions = geometry.attributes.position;
+    const vertexCount = positions.count;
+    const colors = new Float32Array(vertexCount * 3);
+    geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
 
-    function initCubes() {
-        cubes.forEach(c => {
-            scene.remove(c);
-            c.geometry.dispose();
-            c.material.dispose();
-        });
-        cubes = [];
+    const material = new THREE.MeshBasicMaterial({
+        wireframe: true,
+        vertexColors: true,
+        transparent: true,
+        opacity: 0.7
+    });
+    scene.add(new THREE.Mesh(geometry, material));
 
-        const cols = Math.ceil(window.innerWidth / spacing);
-        const rows = Math.ceil(window.innerHeight / spacing);
+    // --- Ripples ---
+    const ripples = [];
+    const maxRipples = 14;
+    const rippleSpeed = 70;  // world units per second
+    const rippleWidth = 14;  // thickness of the ripple ring
+    const rippleDecay = 0.8; // how quickly a ripple fades over time
+    const hoverAmplitude = 5;
+    const clickAmplitude = 10;
 
-        for (let i = 0; i < cols; i++) {
-            for (let j = 0; j < rows; j++) {
-                const material = new THREE.MeshStandardMaterial({
-                    color: currentColors.cube,
-                    roughness: 0.35,
-                    metalness: 0.25
-                });
-                const cube = new THREE.Mesh(geometry, material);
+    const clock = new THREE.Clock();
+    const raycaster = new THREE.Raycaster();
+    const groundPlane = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0);
+    const pointer = new THREE.Vector2();
+    const hitPoint = new THREE.Vector3();
+    let lastRipple = { x: Infinity, z: Infinity, time: -Infinity };
 
-                cube.position.x = (i - cols / 2 + 0.5) * spacing;
-                cube.position.z = (j - rows / 2 + 0.5) * spacing;
-                cube.position.y = 0;
-                cube.scale.y = initialHeight;
+    function pointerToGround(event) {
+        pointer.x = (event.clientX / window.innerWidth) * 2 - 1;
+        pointer.y = -(event.clientY / window.innerHeight) * 2 + 1;
+        raycaster.setFromCamera(pointer, camera);
+        return raycaster.ray.intersectPlane(groundPlane, hitPoint);
+    }
 
-                cube.trail = 0;
-                cube.randomOffset = Math.random() * 0.1;
+    function addRipple(x, z, amplitude) {
+        if (ripples.length >= maxRipples) ripples.shift();
+        ripples.push({ x, z, amplitude, start: clock.elapsedTime });
+        lastRipple = { x, z, time: clock.elapsedTime };
+    }
 
-                scene.add(cube);
-                cubes.push(cube);
-            }
+    function onPointerMove(event) {
+        if (reduceMotion || !pointerToGround(event)) return;
+        // Only drop a new ripple once the cursor has travelled a bit, so it trails rather than piles up
+        const moved = Math.hypot(hitPoint.x - lastRipple.x, hitPoint.z - lastRipple.z);
+        if (moved > 30 || (moved > 8 && clock.elapsedTime - lastRipple.time > 0.4)) {
+            addRipple(hitPoint.x, hitPoint.z, hoverAmplitude);
         }
     }
 
-    const mouse = new THREE.Vector2(-2, -2);
-
-    function onMouseMove(event) {
-        mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-        mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+    function onPointerDown(event) {
+        if (pointerToGround(event)) addRipple(hitPoint.x, hitPoint.z, clickAmplitude);
     }
 
-    function onMouseClick(event) {
-        const clickX = (event.clientX / window.innerWidth) * 2 - 1;
-        const clickY = -(event.clientY / window.innerHeight) * 2 + 1;
-
-        const raycaster = new THREE.Raycaster();
-        raycaster.setFromCamera({ x: clickX, y: clickY }, camera);
-        const plane = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0);
-        const intersectPoint = new THREE.Vector3();
-        raycaster.ray.intersectPlane(plane, intersectPoint);
-
-        // Add shockwave
-        shockwaves.push({
-            center: intersectPoint.clone(),
-            radius: 0,
-            maxRadius: 300,
-            strength: 1.2,
-            decay: 0.97 // controls fade over distance/time
-        });
-    }
+    const mixColor = new THREE.Color();
 
     function animate() {
         requestAnimationFrame(animate);
 
-        const raycaster = new THREE.Raycaster();
-        raycaster.setFromCamera(mouse, camera);
-        const plane = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0);
-        const intersectPoint = new THREE.Vector3();
-        raycaster.ray.intersectPlane(plane, intersectPoint);
+        const now = clock.getElapsedTime();
+        const t = now * timeScale;
 
-        const radius = 60;
-        const baseColor = currentColors.cube;
+        // Drop ripples that have faded out
+        for (let r = ripples.length - 1; r >= 0; r--) {
+            if (Math.exp(-(now - ripples[r].start) * rippleDecay) < 0.02) ripples.splice(r, 1);
+        }
 
-        // Update shockwaves
-        shockwaves.forEach((wave, index) => {
-            wave.radius += 1.5; // slower travel
-            wave.strength *= wave.decay; // fade over time
-            if (wave.radius > wave.maxRadius || wave.strength < 0.01) shockwaves.splice(index, 1);
-        });
+        for (let i = 0; i < vertexCount; i++) {
+            const x = positions.getX(i);
+            const z = positions.getZ(i);
 
-        cubes.forEach(cube => {
-    const dx = cube.position.x - intersectPoint.x;
-    const dz = cube.position.z - intersectPoint.z;
-    const dist = Math.sqrt(dx * dx + dz * dz);
+            // Base swell: a few overlapping sine waves at different angles and speeds
+            let y = Math.sin(x * 0.018 + t * 0.7) * 5
+                  + Math.sin(z * 0.025 + t * 0.5) * 4
+                  + Math.sin((x + z) * 0.012 + t * 1.1) * 3;
 
-    // Mouse hover trail
-    if (dist < radius) {
-        const proximity = 1 - dist / radius;
-        cube.trail = Math.max(cube.trail, proximity);
-    } else {
-        cube.trail *= 0.95;
-    }
+            // Ripples: an expanding ring that oscillates and fades with time
+            let rippleY = 0;
+            for (let r = 0; r < ripples.length; r++) {
+                const ripple = ripples[r];
+                const age = now - ripple.start;
+                const dist = Math.hypot(x - ripple.x, z - ripple.z);
+                const offset = dist - age * rippleSpeed;
+                if (Math.abs(offset) > rippleWidth * 3) continue;
+                const envelope = Math.exp(-(offset * offset) / (2 * rippleWidth * rippleWidth));
+                rippleY += ripple.amplitude * Math.cos(offset * 0.3) * envelope * Math.exp(-age * rippleDecay);
+            }
+            y += rippleY;
+            positions.setY(i, y);
 
-    // Shockwave effects with ripple delay
-    let shockFactor = 0;
-    shockwaves.forEach(wave => {
-        const sx = cube.position.x - wave.center.x;
-        const sz = cube.position.z - wave.center.z;
-        const sDist = Math.sqrt(sx * sx + sz * sz);
+            // Tint lines toward the accent color where ripples pass and on the crests
+            const glow = Math.min(1, Math.abs(rippleY) / 6 + Math.max(0, y - 6) / 20);
+            mixColor.copy(currentColors.line).lerp(currentColors.ripple, glow);
+            colors[i * 3] = mixColor.r;
+            colors[i * 3 + 1] = mixColor.g;
+            colors[i * 3 + 2] = mixColor.b;
+        }
 
-        const delay = 25;
-        const waveInfluence = Math.max(0, 1 - Math.abs(sDist - wave.radius) / delay);
-        shockFactor = Math.max(shockFactor, waveInfluence * wave.strength);
-
-        if (waveInfluence > 0.01) cube.trail = Math.max(cube.trail, waveInfluence * 0.7);
-    });
-
-    const targetScaleY = initialHeight + (hoverHeight - initialHeight) * cube.trail + shockFactor;
-    const colorFactor = Math.min(1, cube.trail * 0.7 + shockFactor * 0.8);
-    const speed = cube.trail > 0 || shockFactor > 0 ? riseSpeed : fallSpeed;
-
-    // Smooth interpolation with snap threshold
-    const difference = targetScaleY - cube.scale.y;
-    if (Math.abs(difference) < 0.001) cube.scale.y = targetScaleY;
-    else cube.scale.y += difference * speed;
-
-    // Adaptive jitter
-    const jitterAmplitude = 0.02 * Math.min(1, Math.abs(difference) * 50);
-    cube.scale.y += Math.sin(Date.now() * 0.002 + cube.randomOffset) * jitterAmplitude;
-
-    // Height-based glow: brighter when taller
-    const glowFactor = THREE.MathUtils.clamp((cube.scale.y - initialHeight) / (hoverHeight + 1), 0, 1);
-
-    const targetColor = shockFactor > 0 ? currentColors.shock : currentColors.hover;
-    const glowColor = targetColor.clone().lerp(new THREE.Color(0xffffff), glowFactor * 0.5); // Blend toward white
-    cube.material.color.copy(baseColor).lerp(glowColor, colorFactor);
-});
-
+        positions.needsUpdate = true;
+        geometry.attributes.color.needsUpdate = true;
 
         renderer.render(scene, camera);
     }
@@ -222,28 +186,21 @@ if (canvas) {
         camera.aspect = window.innerWidth / window.innerHeight;
         camera.updateProjectionMatrix();
         renderer.setSize(window.innerWidth, window.innerHeight);
-        initCubes();
     }
 
     window.addEventListener('resize', onWindowResize);
-    window.addEventListener('mousemove', onMouseMove);
-    window.addEventListener('click', onMouseClick);
+    window.addEventListener('pointermove', onPointerMove);
+    window.addEventListener('pointerdown', onPointerDown);
 
     const originalUpdateThemeUI = updateThemeUI;
     updateThemeUI = () => {
         originalUpdateThemeUI();
         currentColors = document.documentElement.classList.contains('dark') ? darkMode : lightMode;
+        scene.fog.color.copy(currentColors.fog);
     };
 
-    initCubes();
     animate();
 }
-
-
-
-
-
-
 
     updateThemeUI();
 
